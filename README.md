@@ -11,6 +11,7 @@ pip install git+https://github.com/dmbeaglehole/xRFM.git
 See the notebooks folder for examples of steering:
 - Style transfer capabilities (e.g., English to Shakespearean or Poetic)
 - Language transfer capabilities (e.g., English to Spanish, Mandarin to English)
+- Harmful steering (exposing social security numbers)
 
 ## Minimum working requirements
 
