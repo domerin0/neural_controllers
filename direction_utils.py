@@ -512,7 +512,7 @@ def train_rfm_probe_on_concept(train_X, train_y, val_X, val_y,
                         preds = torch.sigmoid(projections @ betas).reshape(targets.shape)
                         val_score = roc_auc_score(targets.cpu().numpy(), preds.cpu().numpy())
                     else:
-                        pred_proba = model.predict_proba(val_X)
+                        pred_proba = model.predict(val_X)
                         val_score = compute_prediction_metrics(pred_proba, val_y)[tuning_metric]
 
                     if maximize_metric and val_score > best_score or not maximize_metric and val_score < best_score:
