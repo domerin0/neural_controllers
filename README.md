@@ -44,13 +44,7 @@ For each concept you must create a subfolder within this data folder. For Shakes
 mkdir data/languages
 ```
 
-For Poetry, 
-
-```
-mkdir data/poetry
-```
-
-As examples, English/Shakespeare, English/Shakespeare, and English/Spanish translation data can be found [here](https://github.com/harsh19/Shakespearizing-Modern-English), [here](), and [here](https://github.com/jatinmandav/Neural-Machine-Translation/tree/master/dataset). Otherwise, to generate directions within the notebooks, you must place appropriate datasets in this directory. Datasets for other notebooks used in the paper will be released soon as a proper benchmark. 
+As examples, English/Shakespeare and English/Spanish translation data can be found [here](https://github.com/harsh19/Shakespearizing-Modern-English) and [here](https://github.com/jatinmandav/Neural-Machine-Translation/tree/master/dataset). Otherwise, to generate directions within the notebooks, you must place appropriate datasets in this directory. Datasets for other notebooks used in the paper will be released as a proper benchmark. 
 
 ## Usage
 
