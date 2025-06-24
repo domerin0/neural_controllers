@@ -11,12 +11,6 @@ pip install git+https://github.com/dmbeaglehole/xRFM.git
 See the notebooks folder for examples of steering:
 - Style transfer capabilities (e.g., English to Shakespearean or Poetic)
 - Language transfer capabilities (e.g., English to Spanish, Mandarin to English)
-- Harmful content generation (e.g. generating social security numbers)
-- Science subjects (e.g. Biology vs. Classical Mechanics)
-- Political leaning (e.g. Democratic vs. Republican)
-- Name disambiguation (e.g. Cam vs. Isaac Newton)
-- Word meaning disambiguation (e.g. (Financial) Bank vs. Riverbank)
-- and more...
 
 ## Minimum working requirements
 
@@ -34,6 +28,29 @@ See the notebooks folder for examples of steering:
 ## Our approach
 ![Neural Controller methodology](figures/main_figure.png)
 Methodology for (B) steering and (C) detecting concepts in language models by aggregating layer-wise predictors. Examples include harmfulness, Shakespearean/Poetic English, and dishonesty. 
+
+## Datasets
+
+To use the notebooks, you must create a data folder within the neural_controllers directory:
+
+```
+cd neural_controllers
+mkdir data
+```
+
+For each concept you must create a subfolder within this data folder. For Shakespeare and Spanish steering,
+
+```
+mkdir data/languages
+```
+
+For Poetry, 
+
+```
+mkdir data/poetry
+```
+
+As examples, English/Shakespeare, English/Shakespeare, and English/Spanish translation data can be found [here](https://github.com/harsh19/Shakespearizing-Modern-English), [here](), and [here](https://github.com/jatinmandav/Neural-Machine-Translation/tree/master/dataset). Otherwise, to generate directions within the notebooks, you must place appropriate datasets in this directory. Datasets for other notebooks used in the paper will be released soon as a proper benchmark. 
 
 ## Usage
 
