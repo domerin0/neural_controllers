@@ -3,7 +3,6 @@ results
 .ipynb_checkpoints/
 delta_setup
 __pycache__
-data/*
 directions/*
 quantitative_comparisons/language_translations/
 quantitative_comparisons/program_translations/
@@ -17,3 +16,16 @@ figures/*
 */*/v1
 results_*
 old_results
+
+data/agentharm/
+data/facts/
+data/hallucinations/
+data/languages/
+data/newton/
+data/politics/
+data/reviews/
+data/sentiment/
+directions_for_v2_paper/
+notebooks/reviews.ipynb
+notebooks/politics.ipynb
+notebooks/harmful.ipynb

@@ -11,7 +11,6 @@ torch.cuda.manual_seed(SEED)
 
 import generation_utils
 import direction_utils
-from calibration import PlattCalibration
 from control_toolkits import *
 
 import os
@@ -29,7 +28,7 @@ TOOLKITS = {
 
 class NeuralController:
     def __init__(self, model, tokenizer, control_method='rfm', n_components=5, 
-                 rfm_iters=10, batch_size=2, calibrate=False):
+                 rfm_iters=10, batch_size=2):
         self.model = model.eval()
         self.tokenizer = tokenizer
         self.control_method = control_method
@@ -42,12 +41,11 @@ class NeuralController:
             'rfm_iters' : rfm_iters,
             'forward_batch_size' : batch_size,
             'M_batch_size' : 2048,
-            'n_components' : n_components,
-            'calibrate' : calibrate
+            'n_components' : n_components
         }
         self.hyperparams = hparams
         
-        self.hidden_layers = list(range(-1, -model.config.num_hidden_layers, -1))
+        self.hidden_layers = list(range(-1, -model.config.num_hidden_layers-1, -1))
         self.toolkit = TOOLKITS[control_method]()
         self.signs = None
         self.detector_coefs = None

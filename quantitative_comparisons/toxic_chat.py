@@ -116,7 +116,7 @@ def main():
     parser.add_argument('--n_components', type=int, default=3)
     parser.add_argument('--k_folds', type=int, default=10)
     parser.add_argument('--rfm_iters', type=int, default=8)
-    parser.add_argument('--prompt_version', type=str, default='empty')
+    parser.add_argument('--prompt_version', type=str, default='v1')
     parser.add_argument('--tuning_metric', type=str, default='top_agop_vectors_ols_auc')
     args = parser.parse_args()
     for n_, v_ in args.__dict__.items():

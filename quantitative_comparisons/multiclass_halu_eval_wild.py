@@ -128,11 +128,11 @@ def split_states_on_idx(inputs, split):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--control_method', type=str, default='rfm')
-    parser.add_argument('--model_name', type=str, default='llama_3.3_70b_4bit_it')
+    parser.add_argument('--model_name', type=str, default='llama_3.3_70b_4bit_it', choices=['llama_3.3_70b_4bit_it', 'llama_3_8b_it'])
     parser.add_argument('--k_folds', type=int, default=5)
     parser.add_argument('--n_components', type=int, default=6)
     parser.add_argument('--rfm_iters', type=int, default=10)
-    parser.add_argument('--prompt_version', type=str, default='empty')
+    parser.add_argument('--prompt_version', type=str, default='v1')
     parser.add_argument('--tuning_metric', type=str, default='top_agop_vectors_ols_auc')
     args = parser.parse_args()
     for n_, v_ in args.__dict__.items():

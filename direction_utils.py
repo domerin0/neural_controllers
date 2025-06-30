@@ -185,7 +185,7 @@ def get_hidden_states(prompts, model, tokenizer, hidden_layers, forward_batch_si
                 out_hidden_states = outputs.hidden_states
             
             hidden_states_all_layers = []
-            for layer_idx, hidden_state in zip(range(-1, -num_layers, -1), reversed(out_hidden_states)):
+            for layer_idx, hidden_state in zip(range(-1, -num_layers-1, -1), reversed(out_hidden_states)):
                 
                 if use_concat:
                     hidden_states_all_layers.append(hidden_state[:,rep_token,:].detach().cpu())
@@ -210,12 +210,12 @@ def project_hidden_states(hidden_states, directions, n_components):
     directions:
         {-1 : [beta_{1}, .., beta_{m}],
         ...,
-        -31 : [beta_{1}, ..., beta_{m}]
+        -32 : [beta_{1}, ..., beta_{m}]
         }
     hidden_states:
         {-1 : [h_{1}, .., h_{d}],
         ...,
-        -31 : [h_{1}, ..., h_{d}]
+        -32 : [h_{1}, ..., h_{d}]
         }
     """
     print("n_components", n_components)
@@ -233,12 +233,12 @@ def aggregate_projections_on_coefs(projections, detector_coef):
     detector_coefs:
         {-1 : [beta_{1}, bias_{1}],
         ...,
-        -31 : [beta_31_{31}, bias_{31},
+        -32 : [beta_32_{32}, bias_{32},
         'agg_sol': [beta_{agg}, bias_{agg}]]
     projections:
         {-1 : tensor (n, n_components),
         ...,
-        -31 : tensor (n, n_components),
+        -32 : tensor (n, n_components),
         }
     """
         
@@ -373,9 +373,6 @@ def aggregate_layers(layer_outputs, train_y, val_y, test_y, agg_model='linear', 
     maximize_metric = (tuning_metric in ['f1', 'auc', 'acc'])
 
     if agg_model=='rfm':
-        # bw_search_space = [5, 10, 20]
-        # reg_search_space = [1e-4, 1e-3, 1e-2]
-        # kernel_search_space = ['l2_high_dim']
         bw_search_space = [10]
         reg_search_space = [1e-4, 1e-3, 1e-2]
         kernel_search_space = ['l2_high_dim']
