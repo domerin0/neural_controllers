@@ -262,8 +262,6 @@ def main():
         judge = LlamaJudge(args.judge_model)
     elif args.judge_type == 'gemma':
         judge = GemmaJudge(args.judge_model)
-    elif args.judge_type == 'anthropic':
-        judge = AnthropicJudge(args.judge_model)
  
     # Try to load predictions or generate new ones
     all_predictions, all_probabilities = load_predictions(args.judge_type, args.judge_model, args.prompt_version)
