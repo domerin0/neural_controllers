@@ -5,7 +5,7 @@ A Python library for implementing neural controllers with decoder-only Large Lan
 We choose Recursive Feature Machines (RFMs) as our nonlinear predictor at every layer and (often) as our aggregation model. These models are simple, lightweight kernel machines. We also include functionality for our aggregation technology with other baselines including linear/logistic probing and contrastive methods like PCA and difference-in-means. The RFM library can be installed from the xRFM github:
 
 ```
-pip install git+https://github.com/dmbeaglehole/xRFM.git
+pip install pip install git+https://github.com/dmbeaglehole/xRFM.git@773fae8
 ```
 
 See the notebooks folder for examples of steering:
@@ -23,7 +23,7 @@ See the notebooks folder for examples of steering:
 - tqdm
 - torchmetrics
 - scikit-learn
-- xRFM (https://github.com/dmbeaglehole/xRFM)
+- xRFM (previous commit 773fae8 of https://github.com/dmbeaglehole/xRFM)
 - Access to decoder-only LLM weights, such as Llama-3.1-8B-it and Gemma-2-9B-it.
 
 ## Our approach
