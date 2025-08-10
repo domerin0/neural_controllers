@@ -2,7 +2,7 @@
 
 A Python library for implementing neural controllers with decoder-only Large Language Models (LLMs), as described in [our paper](https://arxiv.org/abs/2502.03708). Our API allows you to steer the output of language models toward desired concepts and generate lightweight detectors for arbitrary pre-defined concepts. The approach can be implemented with any decoder-only LLM, with demonstrated success on models like instruction-tuned [Llama-3.1-8B](https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct), [Llama-3.3-70B](https://huggingface.co/meta-llama/Llama-3.3-70B-Instruct), and [Gemma-2-9B](https://huggingface.co/google/gemma-2-9b-it). 
 
-We choose Recursive Feature Machines (RFMs) as our nonlinear predictor at every layer and (often) as our aggregation model. These models are simple, lightweight kernel machines. We also include functionality for our aggregation technology with other baselines including linear/logistic probing and contrastive methods like PCA and difference-in-means. The RFM library can be installed from the xRFM github:
+We choose Recursive Feature Machines (RFMs) as our nonlinear predictor at every layer and (often) as our aggregation model. These models are simple, lightweight kernel machines. We also include functionality for our aggregation technology with other baselines including linear/logistic probing and contrastive methods like PCA and difference-in-means. The RFM library can be installed from the xRFM github. The xRFM repo has since been updated but xRFM with MSE and AUC-based metrics can be installed here:
 
 ```
 pip install git+https://github.com/dmbeaglehole/xRFM.git@773fae8
