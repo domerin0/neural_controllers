@@ -128,7 +128,7 @@ def compute_prediction_metrics(preds, labels, classification_threshold=0.5):
     metrics = {'acc': acc, 'precision': precision, 'recall': recall, 'f1': f1, 'auc': auc, 'mse': mse}
     return metrics
 
-def get_hidden_states(prompts, model, tokenizer, hidden_layers, forward_batch_size, rep_token=-1, all_positions=False):
+def get_hidden_states(prompts, model, tokenizer, hidden_layers, forward_batch_size, rep_token=-1, all_positions=False, device='cpu'):
 
     if isinstance(prompts, np.ndarray):
         prompts = prompts.tolist()
@@ -140,9 +140,9 @@ def get_hidden_states(prompts, model, tokenizer, hidden_layers, forward_batch_si
         seq2seq = False
 
     if seq2seq:
-        encoded_inputs = tokenizer(prompts, return_tensors='pt', padding=True).to(model.device)
+        encoded_inputs = tokenizer(prompts, return_tensors='pt', padding=True).to(device)
     else:
-        encoded_inputs = tokenizer(prompts, return_tensors='pt', padding=True, add_special_tokens=False).to(model.device)
+        encoded_inputs = tokenizer(prompts, return_tensors='pt', padding=True, add_special_tokens=False).to(device)
         encoded_inputs['attention_mask'] = encoded_inputs['attention_mask'].half()
     
     dataset = TensorDataset(encoded_inputs['input_ids'], encoded_inputs['attention_mask'])
@@ -177,8 +177,15 @@ def get_hidden_states(prompts, model, tokenizer, hidden_layers, forward_batch_si
 
                 num_layers = len(out_hidden_states)-1 # exclude embedding layer
             else:
-                outputs = model(input_ids=input_ids, attention_mask=attention_mask, output_hidden_states=True)
-                num_layers = len(model.model.layers)
+                outputs = model(
+                    input_ids=input_ids, attention_mask=attention_mask, output_hidden_states=True)
+                # Handle different model architectures
+                if hasattr(model, 'model') and hasattr(model.model, 'layers'):
+                    num_layers = len(model.model.layers)  # LLaMA-style
+                elif hasattr(model, 'transformer') and hasattr(model.transformer, 'h'):
+                    num_layers = len(model.transformer.h)  # GPT-2 style
+                else:
+                    num_layers = len(outputs.hidden_states) - 1  # Fallback
                 out_hidden_states = outputs.hidden_states
             
             hidden_states_all_layers = []
@@ -251,7 +258,8 @@ def aggregate_projections_on_coefs(projections, detector_coef):
     agg_preds = agg_projections@agg_beta + agg_bias
     return agg_preds
 
-def project_onto_direction(tensors, direction, device='cuda'):
+
+def project_onto_direction(tensors, direction, device='cpu'):
     """
     tensors : (n, d)
     direction : (d, )
@@ -392,7 +400,7 @@ def aggregate_layers(layer_outputs, train_y, val_y, test_y, agg_model='linear', 
                             'iters': 10,
                         }
                     }
-                    model = xRFM(rfm_params, device='cuda', tuning_metric=tuning_metric)
+                    model = xRFM(rfm_params, device='cpu', tuning_metric=tuning_metric)
                     model.fit(train_X, train_y, val_X, val_y)              
                     val_preds = model.predict(val_X)
                     metrics = compute_prediction_metrics(val_preds, val_y)
@@ -403,7 +411,7 @@ def aggregate_layers(layer_outputs, train_y, val_y, test_y, agg_model='linear', 
                         best_rfm_score = metrics[tuning_metric]
                         best_rfm_params = deepcopy(rfm_params)
 
-        model = xRFM(best_rfm_params, device='cuda', tuning_metric=tuning_metric)
+        model = xRFM(best_rfm_params, device='cpu', tuning_metric=tuning_metric)
         model.fit(train_X, train_y, val_X, val_y)              
         test_preds = model.predict(test_X)
 
@@ -524,7 +532,8 @@ def train_rfm_probe_on_concept(train_X, train_y, val_X, val_y,
 
     return best_model
 
-def train_linear_probe_on_concept(train_X, train_y, val_X, val_y, use_bias=False, tuning_metric='auc', device='cuda'):
+
+def train_linear_probe_on_concept(train_X, train_y, val_X, val_y, use_bias=False, tuning_metric='auc', device='cpu'):
 
     reg_search_space = [1e-4, 1e-3, 1e-2, 1e-1, 1, 1e1]
     

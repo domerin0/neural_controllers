@@ -13,7 +13,7 @@ class Toolkit:
         pass
         
     def preprocess_data(self, train_data, train_labels, val_data, val_labels, test_data, test_labels, 
-                         model, tokenizer, hidden_layers, hyperparams, device='cuda'):
+                         model, tokenizer, hidden_layers, hyperparams, device='cpu'):
         """
         Handles preprocessing of train/val/test data and extracts hidden states.
         
@@ -68,13 +68,13 @@ class Toolkit:
             print("Assuming train_data is already a dictionary of hidden states")
             train_hidden_states = train_data
         else:
-            train_hidden_states = direction_utils.get_hidden_states(train_data, model, tokenizer, hidden_layers, hyperparams['forward_batch_size'])
+            train_hidden_states = direction_utils.get_hidden_states(train_data, model, tokenizer, hidden_layers, hyperparams['forward_batch_size'], device=device)
 
         if val_passed_as_hidden_states:
             print("Assuming val_data is already a dictionary of hidden states")
             val_hidden_states = val_data
         else:
-            val_hidden_states = direction_utils.get_hidden_states(val_data, model, tokenizer, hidden_layers, hyperparams['forward_batch_size'])
+            val_hidden_states = direction_utils.get_hidden_states(val_data, model, tokenizer, hidden_layers, hyperparams['forward_batch_size'], device=device)
 
         test_hidden_states = None
         test_y = None
@@ -83,7 +83,7 @@ class Toolkit:
                 print("Assuming test_data is already a dictionary of hidden states")
                 test_hidden_states = test_data
             else:
-                test_hidden_states = direction_utils.get_hidden_states(test_data, model, tokenizer, hidden_layers, hyperparams['forward_batch_size'])
+                test_hidden_states = direction_utils.get_hidden_states(test_data, model, tokenizer, hidden_layers, hyperparams['forward_batch_size'], device=device)
             test_y = torch.tensor(test_labels).reshape(-1, num_classes).float().to(device)
         
         return (train_hidden_states, val_hidden_states, test_hidden_states, 
@@ -121,8 +121,8 @@ class RFMToolkit(Toolkit):
         super().__init__()
 
     def _compute_directions(self, train_data, train_labels, val_data, val_labels, model, tokenizer, hidden_layers, hyperparams,
-                            test_data=None, test_labels=None, device='cuda', **kwargs):
-        
+                            test_data=None, test_labels=None, device='cpu', **kwargs):
+
         compare_to_linear = kwargs.get('compare_to_linear', False)
         log_spectrum = kwargs.get('log_spectrum', False)
         log_path = kwargs.get('log_path', None)
@@ -258,8 +258,8 @@ class LinearProbeToolkit(Toolkit):
         super().__init__()
 
     def _compute_directions(self, train_data, train_labels, val_data, val_labels, model, tokenizer, hidden_layers, hyperparams,
-                            test_data=None, test_labels=None, device='cuda', **kwargs):
-        
+                            test_data=None, test_labels=None, device='cpu', **kwargs):
+
         # Process data and extract hidden states
         (train_hidden_states, val_hidden_states, test_hidden_states, 
          train_y, val_y, test_y, test_data_provided, num_classes) = self.preprocess_data(
@@ -284,7 +284,7 @@ class LinearProbeToolkit(Toolkit):
             # Get data for this layer
             train_X, val_X = self.get_layer_data(layer_to_eval, train_hidden_states, val_hidden_states, train_y, val_y, device)
             
-            beta, bias = direction_utils.train_linear_probe_on_concept(train_X, train_y, val_X, val_y)
+            beta, bias = direction_utils.train_linear_probe_on_concept(train_X, train_y, val_X, val_y, device=device)
             
             assert(len(beta)==train_X.shape[1])
             if num_classes == 1: # assure beta is (num_classes, num_features)

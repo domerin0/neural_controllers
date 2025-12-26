@@ -44,8 +44,7 @@ class NeuralController:
             'n_components' : n_components
         }
         self.hyperparams = hparams
-        
-        self.hidden_layers = list(range(-1, -model.config.num_hidden_layers, -1))
+        self.hidden_layers = list(range(-1, -model.config.n_layer, -1))
         self.toolkit = TOOLKITS[control_method]()
         self.signs = None
         self.detector_coefs = None
