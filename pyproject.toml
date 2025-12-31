@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "neural-controllers"
+version = "0.1.0"
+description = "A Python library for implementing neural controllers with decoder-only Large Language Models (LLMs)"
+readme = "README.md"
+license = {file = "LICENSE"}
+requires-python = ">=3.10"
+authors = [
+]
+dependencies = [
+    "torch>=2.4.0",
+    "transformers>=4.47.0",
+    "datasets>=3.1.0",
+    "numpy>=1.26.4",
+    "tqdm",
+    "torchmetrics",
+    "scikit-learn",
+    "xrfm @ git+https://github.com/dmbeaglehole/xRFM.git@773fae8"
+]
+
+[project.urls]
+Homepage = "https://github.com/domerin0/neural_controllers"
+Repository = "https://github.com/domerin0/neural_controllers"

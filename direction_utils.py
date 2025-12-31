@@ -462,7 +462,7 @@ def aggregate_layers(layer_outputs, train_y, val_y, test_y, agg_model='linear', 
     
 def train_rfm_probe_on_concept(train_X, train_y, val_X, val_y, 
                                hyperparams, search_space=None, 
-                               tuning_metric='auc'):
+                               tuning_metric='auc', device='cpu'):
     
     if search_space is None:
         search_space = {
@@ -493,7 +493,7 @@ def train_rfm_probe_on_concept(train_X, train_y, val_X, val_y,
                             'top_k': hyperparams['n_components']
                         }
                     }
-                    model = RFM(**rfm_params['model'], device='cuda')
+                    model = RFM(**rfm_params['model'], device=device)
                     model.fit((train_X, train_y), 
                               (val_X, val_y), 
                               **rfm_params['fit']

@@ -157,7 +157,7 @@ class RFMToolkit(Toolkit):
             train_X, val_X = self.get_layer_data(layer_to_eval, train_hidden_states, val_hidden_states, train_y, val_y, device)
 
             start_time = time.time()
-            rfm_probe = direction_utils.train_rfm_probe_on_concept(train_X, train_y, val_X, val_y, hyperparams, tuning_metric=tuning_metric)
+            rfm_probe = direction_utils.train_rfm_probe_on_concept(train_X, train_y, val_X, val_y, hyperparams, tuning_metric=tuning_metric, device=device)
             end_time = time.time()
             print(f"Time taken to train rfm probe: {end_time - start_time} seconds")
             if isinstance(rfm_probe, RFM):
